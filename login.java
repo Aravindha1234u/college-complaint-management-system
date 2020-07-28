@@ -24,16 +24,16 @@ public class login {
 				if(rs.next()) {
 					String checkString=p1.regexString(passwd);
 					if (rs.getString("password").equals(checkString)) {
-						System.out.println("Access Granted");
+						throw new regexValidation("Access Granted");
 					}else if(checkString!="") {
-						System.out.println("Username or Password is incorrect");
+						throw new regexValidation("Username or Password is incorrect");
 					}
 					
 				}else {
-					System.out.println("Username Not Found");
+					throw new regexValidation("Username Not Found");
 				}
 			}catch(SQLException e) {
-				System.out.println("Sql Injection");
+				throw new regexValidation("Sql Injection");
 			}
 			p.close();
 		}catch(Exception e) {

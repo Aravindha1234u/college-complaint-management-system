@@ -214,9 +214,9 @@ public class student_registerform {
                             regex.regexvalid((Student) student);
                             
                             password p1=new password();
-                            String encrypedString = p1.regexString(new String(password_passwordfield.getPassword()));
+                            String encrypedString = p1.regexString(new String(password_passwordfield.getText()));
                             if("Password Did not match the requirement" == encrypedString){
-                            	throw new regexValidation("Password Did not match the requirement");
+                            	throw new regexValidation(encrypedString);
                             }
 			                student.password=encrypedString;
 			        		
@@ -264,7 +264,4 @@ public class student_registerform {
 		
 }
    
-   public static void main(String[] args) {
-	   new student_registerform();	
-}
 }

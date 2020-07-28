@@ -1,5 +1,6 @@
 package project;
 
+import java.sql.SQLException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,14 +15,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-class Student extends Object{
+class Student{
 	String regno,email,phonenumber,depart,section,dob,year,firstname,lastname,gender,password,otp,credit;
 }
-class Advisor extends Object{
-	String adclass,email,password,phonenumber,department,otp,firstname,lastname,gender;
-}
 public class Complain_System {
+	public static void main(String args[]) throws ClassNotFoundException, SQLException,regexValidation {
+	new Complain_System();
+	}
+     
 	JFrame frame;
 	JMenuBar menubar;
 	JMenu admin,advisor,student;
@@ -35,7 +35,7 @@ public class Complain_System {
      frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
      frame.setLayout(null);
 
-     ImageIcon icon= new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\Logo.png");
+     ImageIcon icon= new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\complaint.png");
      frame.setIconImage(icon.getImage());
      
       menubar =new JMenuBar();
@@ -58,7 +58,8 @@ public class Complain_System {
       admin_login.setFont(new Font("Yu Gothic", Font.BOLD, 19));   
       admin_login.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		  new admin_login();
+    		String username="root",password="Toor@123";
+   		    new login().checkcreds("Db.admin",username,password);
     	  }
       });
       
@@ -84,7 +85,7 @@ public class Complain_System {
       advisor_register.setFont(new Font("Yu Gothic", Font.BOLD, 19));
       advisor_register.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		  new advisor_registerform();
+    		  
     	  }
       });
       
@@ -121,13 +122,20 @@ public class Complain_System {
       menubar.setBackground(Color.BLACK);
          
       frame.setLayout(new BorderLayout());
-  	  JLabel background=new JLabel(new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\bg.jpg"));
+  	  JLabel background=new JLabel(new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\srikrishna2.jpg"));
   	  frame.add(background);
+
+//      JLabel background1=new JLabel();
+//      ImageIcon icon2= new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\srikrishna2.jpg");
+//      background1.setIcon(icon2);
+//      background1.setBounds(300, 300,icon2.getIconWidth()+200, icon2.getIconHeight()+200);
+//      frame.add(background1);
+//       
+//  	  JLabel label1=new JLabel("COMPLAINT PORTAL");
+//  	  frame.add(label1);
      
-  	 frame.setVisible(true);
+  	  frame.setVisible(true);
+ 
 	}
-	
-	public static void main(String args[]) throws ClassNotFoundException, SQLException {
-		new Complain_System();
-	}
+
 }
