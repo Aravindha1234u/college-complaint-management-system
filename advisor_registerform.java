@@ -125,7 +125,6 @@ public class advisor_registerform {
 					advisor.lastname=tf2_1.getText();
 					advisor.email=tf5.getText();
 					advisor.phonenumber=tf4.getText();
-					advisor.password=value.getText();
 					advisor.department=cb.getSelectedItem().toString();
 					advisor.gender=str_gender;
 					
@@ -142,10 +141,12 @@ public class advisor_registerform {
                     if("Password Did not match the requirement" == encrypedString){
                     	throw new regexValidation(encrypedString);
                     }
+                    advisor.password=encrypedString;
 					
 					register reg = new register();
 					advisor.otp=reg.otp();
 					reg.appendRow(advisor);
+					JOptionPane.showMessageDialog(null, "Registration Success!");
 				} catch (regexValidation e1) {
 					JOptionPane.showMessageDialog(null, e1.exString);
 				}catch (Exception e2) {

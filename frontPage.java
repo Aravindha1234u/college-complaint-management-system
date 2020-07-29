@@ -68,7 +68,7 @@ public class frontPage {
       student_complaint.setFont(new Font("Yu Gothic", Font.BOLD, 19));
       student_complaint.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		  
+    		  new loginForm();
     	  }
       });
       
@@ -85,23 +85,15 @@ public class frontPage {
       advisor_login.setFont(new Font("Yu Gothic", Font.BOLD, 19));
       advisor_login.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		  
+    		  new loginForm();
     	  }
       });
       
-      advisor_update=new JMenuItem("Update");
-      advisor_update.setFont(new Font("Yu Gothic", Font.BOLD, 19));
-      advisor_update.addActionListener(new ActionListener() {
-    	  public void actionPerformed(ActionEvent e) {
-    		  
-    	  }
-      });
-      
+
       
       admin.add(admin_login);
       advisor.add(advisor_register);
       advisor.add(advisor_login);
-      advisor.add(advisor_update);
       student.add(student_register);
       student.add(student_complaint);
        

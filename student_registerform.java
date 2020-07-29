@@ -159,6 +159,12 @@ public class student_registerform {
 		roll_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		roll_textfield.setBounds(282, 147, 304, 29);
 		frame.getContentPane().add(roll_textfield);
+		roll_textfield.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				email_textfield.setText(roll_textfield.getText()+"@skcet.ac.in");				
+			}
+		});
 		
 		email_textfield = new JTextField();
 		email_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));

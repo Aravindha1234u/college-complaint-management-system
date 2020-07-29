@@ -9,17 +9,19 @@ public class login {
 		password p1=new password();
 		try {
 			sqlconnect sql=new sqlconnect();
-			
-			String query = "select * from "+tableName+" where username=?";
+			String query;
+			if(tableName=="Db.admin")
+				query = "select * from "+tableName+" where username=?";
+			else
+				query = "select * from "+tableName+" where email= ?";
 			
 			//Parameterized Queries
 			PreparedStatement p = sql.con.prepareStatement(query);
 		    p.setString(1, username);
-
 			try {
 			//resultset for storing query
 				ResultSet rs=p.executeQuery();
-			
+
 				//fetching query
 				if(rs.next()) {
 					String checkString=p1.regexString(passwd);
@@ -33,6 +35,7 @@ public class login {
 					throw new regexValidation("Username Not Found");
 				}
 			}catch(SQLException e) {
+				System.out.println(e);
 				throw new regexValidation("Sql Injection");
 			}
 			p.close();

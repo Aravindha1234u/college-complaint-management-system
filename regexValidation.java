@@ -24,7 +24,7 @@ public class regexValidation  extends Throwable {
 		}
 		
 		//Register Number
-		regexString = "([0-9]{2}EU[A-Za-z]{2}[0-9]{3})";
+		regexString = "^[0-9]{2}EU[A-Za-z]{2}[0-9]{3}$";
 		r = Pattern.compile(regexString);
 		m = r.matcher(object.regno);
 		bool = new Boolean(m.find());
@@ -35,7 +35,7 @@ public class regexValidation  extends Throwable {
 		}
 
 		//Email ID
-		regexString = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+		regexString = "^[0-9]{2}EU[A-Za-z]{2}[0-9]{3}@?skcet\\.ac\\.in$";
 		r = Pattern.compile(regexString);
 		m = r.matcher(object.email);
 		bool = new Boolean(m.find());
