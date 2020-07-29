@@ -1,6 +1,5 @@
 package project;
 
-import java.sql.SQLException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,27 +14,21 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-class Student{
-	String regno,email,phonenumber,depart,section,dob,year,firstname,lastname,gender,password,otp,credit;
-}
-public class Complain_System {
-	public static void main(String args[]) throws ClassNotFoundException, SQLException,regexValidation {
-	new Complain_System();
-	}
-     
+
+public class frontPage {
 	JFrame frame;
 	JMenuBar menubar;
 	JMenu admin,advisor,student;
 	JMenuItem admin_login,student_register,student_complaint,advisor_register,advisor_login,advisor_update ;
 	
-	Complain_System()
+	frontPage()
 	{
 	 frame = new JFrame("COLLEGE COMPLAINT SYSTEM");
 	 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
      frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
      frame.setLayout(null);
 
-     ImageIcon icon= new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\complaint.png");
+     ImageIcon icon= new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\Logo.png");
      frame.setIconImage(icon.getImage());
      
       menubar =new JMenuBar();
@@ -58,8 +51,7 @@ public class Complain_System {
       admin_login.setFont(new Font("Yu Gothic", Font.BOLD, 19));   
       admin_login.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		String username="root",password="Toor@123";
-   		    new login().checkcreds("Db.admin",username,password);
+    		  new admin_login();
     	  }
       });
       
@@ -85,7 +77,7 @@ public class Complain_System {
       advisor_register.setFont(new Font("Yu Gothic", Font.BOLD, 19));
       advisor_register.addActionListener(new ActionListener() {
     	  public void actionPerformed(ActionEvent e) {
-    		  
+    		  new advisor_registerform();
     	  }
       });
       
@@ -122,20 +114,9 @@ public class Complain_System {
       menubar.setBackground(Color.BLACK);
          
       frame.setLayout(new BorderLayout());
-  	  JLabel background=new JLabel(new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\srikrishna2.jpg"));
+  	  JLabel background=new JLabel(new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\bg.jpg"));
   	  frame.add(background);
-
-//      JLabel background1=new JLabel();
-//      ImageIcon icon2= new ImageIcon("C:\\Users\\SOBIGHA\\Desktop\\srikrishna2.jpg");
-//      background1.setIcon(icon2);
-//      background1.setBounds(300, 300,icon2.getIconWidth()+200, icon2.getIconHeight()+200);
-//      frame.add(background1);
-//       
-//  	  JLabel label1=new JLabel("COMPLAINT PORTAL");
-//  	  frame.add(label1);
      
-  	  frame.setVisible(true);
- 
+  	 frame.setVisible(true);
 	}
-
 }
