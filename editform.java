@@ -1,31 +1,44 @@
 package project;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.util.Calendar;
+import javax.tools.JavaCompiler;
 
-public class complaintform {
 
+public class editform {
 	 JFrame frame;
 	 JLabel victim_label,roll_label,dept_label,time_label,reason_label,place_label,section_label,year_label;
 	 JTextField name_textfield,roll_textfield,timing_textfield;
 	 JTextArea reason_textarea;
 	 JButton  submit_button,clear_button;
+	 int[] seq= {4,5,3,8,9,1,2,6,7};
+	 sqlconnect sql;
+	 String queryString; 
+	 PreparedStatement p ;
+	 ResultSet rs;
 	 
-	 complaintform()
-	 {
+	editform(int sno) {
 		frame = new JFrame();
 		frame.setTitle("Complaint Form");
 		frame.setBounds(100, 100, 801, 774);
@@ -87,7 +100,7 @@ public class complaintform {
 		JSpinner startTime=new JSpinner();
 		startTime.setModel(model);
 		startTime.setBounds(297, 455, 277, 34);
-		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-mm-dd"));
+		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-MM-dd"));
 		JFormattedTextField tf= ((JSpinner.DefaultEditor)startTime.getEditor()).getTextField();
 	   	tf.setEditable(false);
 	   	frame.getContentPane().add(startTime);
@@ -144,37 +157,45 @@ public class complaintform {
 
 	    submit_button = new JButton("Submit");
 	    submit_button.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
+				String[] formvalue = new String[9];
+				try {
 				
-			            try{             
-			            	sqlconnect sql = new sqlconnect();
-			                String str_victimname=name_textfield.getText();
-                            String str_roll=roll_textfield.getText();
-                            String str_reason=reason_textarea.getText();
-                            String str_timing=tf.getText();
-			                String str_dept=dept_combobox.getSelectedItem().toString();
-			                String str_year=year_combobox.getSelectedItem().toString();
-			                String str_section=section_combobox.getSelectedItem().toString();
-			                String str_place=place_combobox.getSelectedItem().toString();
-			                
-			                String query="insert into Db.complain(SNO,PLACE,TIME,DEPARTMENT,VICTIM_NAME,REGNO,REASON,REMARK,YEAR,SECTION) values(Db.complain_seq.NEXTVAL,?,?,?,?,?,?,?,?,?)";
-			                PreparedStatement p = sql.con.prepareStatement(query);
-			                p.setString(1,str_place);
-			                p.setDate(2, Date.valueOf(str_timing) );
-			                p.setString(3,str_dept);
-			                p.setString(4,str_victimname);
-			                p.setString(5,str_roll);
-			                p.setString(6,str_reason);
-			                p.setString(7, "");
-			                p.setString(8, str_year);
-			                p.setString(9, str_section);
-			                p.executeUpdate();
-			                JOptionPane.showMessageDialog(null, "Registration Success!");     
-			              }
-			            catch(Exception ex){
-			                JOptionPane.showMessageDialog(null, ex.toString());
-			            }
-			        }
+				formvalue[0]=name_textfield.getText().toString();
+				formvalue[1]=roll_textfield.getText().toString();
+				formvalue[2]=dept_combobox.getSelectedItem().toString();
+				formvalue[3]=year_combobox.getSelectedItem().toString();
+				formvalue[4]=section_combobox.getSelectedItem().toString();
+				formvalue[5]=place_combobox.getSelectedItem().toString();
+				formvalue[6]=tf.getText();
+				formvalue[7]=reason_textarea.getText().toString();
+				
+				for(int i=0;i<8;i++) {
+					//check for Changed value
+					if(rs.getString(seq[i]).equals(formvalue[i])==false) {
+						
+						queryString = "UPDATE Db.complain SET "+rs.getMetaData().getColumnName(seq[i])+"=? WHERE SNO = ?";
+						
+						p =sql.con.prepareStatement(queryString);
+						if(i!=6)
+							p.setString(1, formvalue[i]);
+						else 
+							//"TO_DATE('"+formvalue[i]+"','YYYY-MM-DD')";
+							p.setDate(1, Date.valueOf(formvalue[i]));
+						
+						p.setInt(2, sno);
+						p.executeQuery();
+						JOptionPane.showMessageDialog(null, "Update Successfully");
+					}
+				}
+		       }
+				catch (Exception e1) {
+					// TODO: handle exception
+					System.out.println(e1);
+				}
+			}
 		});
 	    submit_button .setFont(new Font("Yu Gothic", Font.BOLD, 21));
 	    submit_button .setBounds(235, 654, 131, 34);
@@ -193,10 +214,28 @@ public class complaintform {
 		});
 		clear_button.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		clear_button.setBounds(406, 654, 131, 34);
-		frame.getContentPane().add(clear_button );
+		frame.getContentPane().add(clear_button);
 			
 		frame.setVisible(true);
+		
+		try {
+		   sql=new sqlconnect();
+	 	   queryString = "Select * from Db.complain where sno=?";
+	 	   p = sql.con.prepareStatement(queryString);
+	 	   p.setInt(1, sno);
+	 	   rs = p.executeQuery();
+	 	   rs.next();
+	 	   
+          name_textfield.setText(rs.getString(seq[0]));
+          roll_textfield.setText(rs.getString(seq[1]));
+          dept_combobox.setSelectedItem(rs.getString(seq[2]));
+          year_combobox.setSelectedItem(rs.getString(seq[3]));
+          section_combobox.setSelectedItem(rs.getString(seq[4]));
+          place_combobox.setSelectedItem(rs.getString(seq[5]));
+          tf.setValue(rs.getDate(seq[6]));
+          reason_textarea.setText(rs.getString(seq[7]));
+		}catch (Exception e) {
+			System.out.println(e);
+		}
 	}
-
-	
- }
+}
