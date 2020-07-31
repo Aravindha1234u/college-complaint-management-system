@@ -11,8 +11,6 @@ class Advisor extends Object{
 public class Complain_System {
 	
 	public static void main(String args[]) throws ClassNotFoundException, SQLException {
-		//new frontPage();
-		//new complaintform();
-		new viewform();
+		new frontPage();
 	}
 }

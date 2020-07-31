@@ -3,9 +3,7 @@ package project;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,9 +24,12 @@ public class  viewform  {
    JLabel view_label;
    JScrollPane scroll;
    DefaultTableModel model;
-   
+   sqlconnect sql;
+   Statement stmt;
+   ResultSet rs;
 	 
-   viewform(){
+   @SuppressWarnings("serial")
+viewform(){
 				
 		   frame=new JFrame("View Complaints");
 	       frame.setSize(1180,800);  
@@ -40,9 +41,12 @@ public class  viewform  {
 	       view_label.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 	       frame.getContentPane().add(view_label);
 	      
-	       table=new JTable();
+	       table=new JTable(6,9) {public boolean isCellEditable(int row,int columns) {
+	                   return false;
+	               }};
 	       model = new DefaultTableModel(new String[]{"SNO","VICTIM_NAME", "ROLLNUMBER", "DEPARTMENT","YEAR","SECTION","PLACE","TIMING","REASON","REMARKS"}, 0);	            
 	       table.setRowHeight(60);	
+	       
 	
 	       scroll = new JScrollPane(table);
 	       scroll.setBounds(50, 70, 1000, 550);
@@ -76,19 +80,40 @@ public class  viewform  {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == delete_button) {
 		    		  int i = table.getSelectedRow();
-		                  if(i >= 0){
-		            	  
-		    //         	  new deleteform();
-		            	  
+		                if(i >= 0){
+			                try {
+			                   sql=new sqlconnect();
+			       	    	   Statement stmt=sql.con.createStatement();
+			       	    	   stmt.executeUpdate("delete from Db.complain where sno="+(i+1));
+			       	    	   model.removeRow(i);
+			       	    	   rs = stmt.executeQuery("select * from Db.complain");
+			       	    	   int j=1;
+			       	    	   while(rs.next()) {
+			       	    		   int tempSno=rs.getInt("sno");
+			       	    		   //System.out.println(tempSno);
+			       	    		   try {
+			       	    			   sql.con.createStatement().executeUpdate("update Db.complain set sno="+ j +" where sno="+tempSno);
+			       	    		   }
+			       	    		   catch(SQLException sqle) {
+			       	    			   if(sqle.toString()!="java.sql.SQLException: ORA-00001: unique constraint (DB.COMPLAIN_PK) violated")
+			       	    				System.out.println(sqle.toString());
+			       	    		   }
+			       	    		   j++; // Next Record
+			       	    	   }
+			       	    	   stmt.close();
+			       	    	JOptionPane.showMessageDialog(null, "Removed Successfully");
+			                }catch(Exception E) {
+		                		  System.out.println(E.toString());
+		                	}
 		    	       }
 		    	  }
 			}
 		}); 
 	       
 	       try {
-	    	   sqlconnect sql=new sqlconnect();
-	    	   Statement stmt=sql.con.createStatement();
-	    	   ResultSet rs=stmt.executeQuery("select * from Db.complain");
+	    	   sql=new sqlconnect();
+	    	   stmt=sql.con.createStatement();
+	    	   rs=stmt.executeQuery("select * from Db.complain");
 	    	   while(rs.next())
 	    	   {
 	    		   int sno = rs.getInt("sno");

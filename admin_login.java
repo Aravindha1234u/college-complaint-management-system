@@ -39,6 +39,10 @@ public class admin_login
 					new login().checkcreds("Db.admin",username,password);
 				} catch (regexValidation e1) {
 					JOptionPane.showMessageDialog(null, e1.exString);
+					if(e1.exString == "Access Granted") {
+						new viewform();
+					}
+						
 				}
 				
 			}

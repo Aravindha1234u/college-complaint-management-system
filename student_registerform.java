@@ -228,6 +228,9 @@ public class student_registerform {
 			        		
 			                register reg = new register();
 			                student.otp=reg.otp();
+			                if (student.otp != JOptionPane.showInputDialog(frame,"Enter the OTP")) {
+			                	JOptionPane.showInputDialog(null,"Wrong OTP");
+			                }
 	                		if (reg.appendRow((Student) student) == 1) 
 	                			JOptionPane.showMessageDialog(null, "Registration Success!");
 	                		else

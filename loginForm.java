@@ -18,6 +18,8 @@ public class loginForm {
     JTextField email_textfield;
     JPasswordField password_pass;
     JButton submit_button,clear_button;
+    Boolean bool;
+    String dbName,Email;
 
     loginForm() {
         frame = new JFrame();
@@ -49,14 +51,14 @@ public class loginForm {
         submit_button = new JButton("Submit");
         submit_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+            	
                 try{
                 	String regexString = "^[0-9]{2}eu[A-Za-z]{2}[0-9]{3}@?skcet\\.ac\\.in$";
-            		String dbName,Email=email_textfield.getText().toLowerCase();
+            		Email=email_textfield.getText().toLowerCase();
             		
             		Pattern r = Pattern.compile(regexString);
             		Matcher m = r.matcher(Email);
-            		Boolean bool = new Boolean(m.find());
+            		bool = new Boolean(m.find());
             		@SuppressWarnings("deprecation")
 					String Password=password_pass.getText();
             		if(bool==true) {
@@ -68,9 +70,16 @@ public class loginForm {
             		new login().checkcreds(dbName,Email,Password);
                 }catch(regexValidation re) {
                 	JOptionPane.showMessageDialog(null, re.exString);
+                	if(bool==true && re.exString=="Access Granted") {
+                		new complaintform();
+                	}else {
+                		//Advisor Dashboard
+                		new advisorForm(Email);
+                	}
                 }
                 catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.toString());
+                    
                 }
             }
         });
