@@ -105,10 +105,10 @@ public class frontPage {
       menubar.setPreferredSize(new Dimension(50,50));
       menubar.setBackground(Color.BLACK);
          
-      frame.setLayout(new BorderLayout());
+      
   	  JLabel background=new JLabel(new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\bg.jpg"));
+  	  background.setBounds(0,0,1600,900);
   	  frame.add(background);
-     
   	 frame.setVisible(true);
 	}
 }

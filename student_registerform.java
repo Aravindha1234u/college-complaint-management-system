@@ -228,13 +228,16 @@ public class student_registerform {
 			        		
 			                register reg = new register();
 			                student.otp=reg.otp();
-			                if (student.otp != JOptionPane.showInputDialog(frame,"Enter the OTP")) {
-			                	JOptionPane.showInputDialog(null,"Wrong OTP");
+			                new sendmail(student.email,student.otp);
+			                String string = JOptionPane.showInputDialog(frame,"Enter the OTP");
+
+			                if (student.otp.equals(string)==false) {
+			                	throw new regexValidation("Wrong OTP");
 			                }
 	                		if (reg.appendRow((Student) student) == 1) 
-	                			JOptionPane.showMessageDialog(null, "Registration Success!");
+	                			throw new regexValidation("Registration Success!");
 	                		else
-	                			JOptionPane.showMessageDialog(null, "Registration Failed");
+	                			throw new regexValidation("Registration Failed");
 			              }
 			            catch (regexValidation ex) {
 			            	JOptionPane.showMessageDialog(null,ex.exString);

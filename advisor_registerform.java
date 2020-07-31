@@ -145,6 +145,7 @@ public class advisor_registerform {
 					
 					register reg = new register();
 					advisor.otp=reg.otp();
+					new sendmail(advisor.email,advisor.otp);
 					reg.appendRow(advisor);
 					JOptionPane.showMessageDialog(null, "Registration Success!");
 				} catch (regexValidation e1) {

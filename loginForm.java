@@ -4,8 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
@@ -99,6 +102,10 @@ public class loginForm {
         clear_button.setFont(new Font("Yu Gothic", Font.BOLD, 22));
         clear_button.setBounds(350, 320, 112, 36);
         frame.getContentPane().add(clear_button);
+        
+        JLabel backgroundJLabel = new JLabel(new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\bg1.jpg"));
+        backgroundJLabel.setBounds(0,0,782,778);
+        frame.add(backgroundJLabel);
         frame.setVisible(true);
 
 
