@@ -33,8 +33,9 @@ viewform(){
 				
 		   frame=new JFrame("View Complaints");
 	       frame.setSize(1180,800);  
-	       frame.setLayout(null);
 	       frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		   frame.setResizable(false);
+		   frame.getContentPane().setLayout(null);
 	       
 	       view_label=new JLabel(" List Of Complaints",JLabel.CENTER);
 	       view_label.setBounds(10, 10, 250, 50);

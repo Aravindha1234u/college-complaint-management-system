@@ -44,7 +44,7 @@ public class register {
 	public int appendRow(Advisor advisor)  {
 		try {
 			sqlconnect sql = new sqlconnect();
-			String query = "insert into Db.advisor values(?,?,?,?,?,?,?,?,?)";
+			String query = "insert into Db.advisor values(?,?,?,?,?,?,?,?,?,?)";
 			
 			//Parameterized Queries
 			PreparedStatement p = sql.con.prepareStatement(query);
@@ -58,6 +58,7 @@ public class register {
 			p.setString(7, advisor.firstname);
 			p.setString(8, advisor.lastname);
 			p.setString(9, advisor.gender);
+			p.setString(10, advisor.year);
 			
 		    return p.executeUpdate(); 
 		}catch (Exception e) {

@@ -2,12 +2,16 @@ package project;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class student_registerform {
 	 JFrame frame; 
      JLabel fullname_label,firstname_label,lastname_label,email_label,confirm_label,password_lablel,gender_label,phone_label,
       roll_label,year_label,dateofbirth_label,dept_label,section_label;
-	 JTextField firstname_textfield,lastname_textfield,roll_textfield,email_textfield,dateofbirth_textfield,phone_textfield;
+	 JTextField firstname_textfield,lastname_textfield,email_textfield,dateofbirth_textfield,phone_textfield;
+	 TextField roll_textfield;
 	 JPasswordField password_passwordfield,confirm_passwordfield; 
 	 JRadioButton male_radio,female_radio;
 	 ButtonGroup bg;
@@ -18,8 +22,9 @@ public class student_registerform {
 	    frame = new JFrame();
 	    frame.setFont(new Font("Dialog", Font.BOLD, 12));
 	    frame.setTitle("Student Registration Form");
-		frame.setBounds(100, 100, 782, 778);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setBounds(500, 100, 782, 778);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		fullname_label = new JLabel("Full Name");
@@ -28,13 +33,13 @@ public class student_registerform {
 		frame.getContentPane().add(fullname_label);
 		
 	    firstname_label = new JLabel("First Name");
-	    firstname_label.setForeground(Color.GRAY);
+	    firstname_label.setForeground(Color.BLACK);
 	    firstname_label.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 	    firstname_label.setBounds(292, 115, 77, 16);
 		frame.getContentPane().add(firstname_label);
 		
 		lastname_label = new JLabel("Last Name");
-		lastname_label.setForeground(Color.GRAY);
+		lastname_label.setForeground(Color.BLACK);
 		lastname_label.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		lastname_label.setBounds(446, 115, 77, 16);
 		frame.getContentPane().add(lastname_label);
@@ -155,14 +160,43 @@ public class student_registerform {
 		lastname_textfield.setBounds(436, 84, 150, 29);
 		frame.getContentPane().add(lastname_textfield);
 		
-		roll_textfield = new JTextField();
+		roll_textfield = new TextField();
 		roll_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		roll_textfield.setBounds(282, 147, 304, 29);
 		frame.getContentPane().add(roll_textfield);
-		roll_textfield.addActionListener(new ActionListener() {
+		roll_textfield.addTextListener(new TextListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				email_textfield.setText(roll_textfield.getText()+"@skcet.ac.in");				
+			public void textValueChanged(TextEvent e) {
+				email_textfield.setText(roll_textfield.getText());
+				if(roll_textfield.getText().length()>=2) {
+					int y = Integer.valueOf(roll_textfield.getText().substring(0,2));
+					year_combobox.setSelectedIndex(20-y);
+				}
+				if(roll_textfield.getText().length()==9) {
+					email_textfield.setText(email_textfield.getText()+"@skcet.ac.in");
+					int c = Integer.valueOf(roll_textfield.getText().substring(6,9));
+					if(c<=60) {
+						section_combobox.setSelectedIndex(0);
+					}else if(c<=120) {
+						section_combobox.setSelectedIndex(1);
+					}else {
+						section_combobox.setSelectedIndex(2);
+					}
+				}
+				if(roll_textfield.getText().length()>=6) {
+					String[] d = {"CSE","IT","EEE","ECE","MECH","MCT","CIVIL"};
+					ArrayList<String> D = new ArrayList<String>();
+					D.add("CS");
+					D.add("IT");
+					D.add("EE");
+					D.add("EC");
+					D.add("ME");
+					D.add("MT");
+					D.add("CI");
+					
+					String tempString = roll_textfield.getText().charAt(4)+""+roll_textfield.getText().charAt(5);
+					dept_combobox.setSelectedItem(d[D.indexOf(tempString)]);
+				}
 			}
 		});
 		
@@ -170,11 +204,18 @@ public class student_registerform {
 		email_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		email_textfield.setBounds(281, 211, 305, 29);
 		frame.getContentPane().add(email_textfield);
+		email_textfield.setEditable(false);
 		
-		dateofbirth_textfield = new JTextField();
-		dateofbirth_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
-		dateofbirth_textfield.setBounds(292, 440, 290, 29);
-		frame.getContentPane().add(dateofbirth_textfield);
+		SpinnerDateModel model=new SpinnerDateModel();
+		model.setCalendarField(Calendar.HOUR);
+		JSpinner startTime=new JSpinner();
+		startTime.setModel(model);
+		startTime.setBounds(297, 440, 277, 34);
+		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-MM-dd"));
+		JFormattedTextField dateofbirth_textfield = ((JSpinner.DefaultEditor)startTime.getEditor()).getTextField();
+		dateofbirth_textfield.setEditable(false);
+	   	frame.getContentPane().add(startTime);
+		
 	
 		phone_textfield = new JTextField();
 		phone_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
@@ -271,7 +312,11 @@ public class student_registerform {
 		clear_button.setFont(new Font("Yu Gothic", Font.BOLD, 22));
 		clear_button.setBounds(411, 662, 112, 36);
 		frame.getContentPane().add(clear_button);
-		
+
+		JLabel backgroundJLabel = new JLabel(new ImageIcon(System.getProperty("user.dir")+"\\src\\project\\bg2.jpg"));
+        backgroundJLabel.setBounds(0,0,782,778);
+        frame.add(backgroundJLabel);
+	        
 		frame.setVisible(true);
 		
 }

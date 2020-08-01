@@ -22,9 +22,9 @@ import javax.swing.SpinnerDateModel;
 
 public class editform {
 	 JFrame frame;
-	 JLabel victim_label,roll_label,dept_label,time_label,reason_label,place_label,section_label,year_label;
+	 JLabel victim_label,roll_label,dept_label,time_label,reason_label,place_label,section_label,year_label,remarks_label;
 	 JTextField name_textfield,roll_textfield,timing_textfield;
-	 JTextArea reason_textarea;
+	 JTextArea reason_textarea,remarks_textarea;
 	 JButton  submit_button,clear_button;
 	 int[] seq= {4,5,3,8,9,1,2,6,7};
 	 sqlconnect sql;
@@ -35,8 +35,9 @@ public class editform {
 	editform(int sno) {
 		frame = new JFrame();
 		frame.setTitle("Complaint Form");
-		frame.setBounds(100, 100, 801, 774);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(500, 100, 782, 778);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		victim_label = new JLabel("Suspect Name");
@@ -63,6 +64,11 @@ public class editform {
 		reason_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		reason_label.setBounds(141, 510, 76, 31);
 		frame.getContentPane().add(reason_label);
+		
+		remarks_label = new JLabel("Remarks");
+		remarks_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		remarks_label.setBounds(130, 580, 100, 31);
+		frame.getContentPane().add(remarks_label);
 		
 		place_label = new JLabel("Place");
 		place_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
@@ -146,8 +152,13 @@ public class editform {
 		
 		reason_textarea = new JTextArea();
 		reason_textarea.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		reason_textarea.setBounds(297, 507, 280, 116);	
+		reason_textarea.setBounds(297, 507, 280, 50);	
 		frame.getContentPane().add(reason_textarea);
+		
+		remarks_textarea = new JTextArea();
+		remarks_textarea.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		remarks_textarea.setBounds(297, 575, 280, 50);	
+		frame.getContentPane().add(remarks_textarea);
 
 	    submit_button = new JButton("Submit");
 	    submit_button.addActionListener(new ActionListener() {
@@ -165,7 +176,8 @@ public class editform {
 				formvalue[5]=place_combobox.getSelectedItem().toString();
 				formvalue[6]=tf.getText();
 				formvalue[7]=reason_textarea.getText().toString();
-				
+				formvalue[7]=remarks_textarea.getText().toString();
+				int flag=0;
 				for(int i=0;i<8;i++) {
 					//check for Changed value
 					if(rs.getString(seq[i]).equals(formvalue[i])==false) {
@@ -181,7 +193,10 @@ public class editform {
 						
 						p.setInt(2, sno);
 						p.executeQuery();
-						JOptionPane.showMessageDialog(null, "Update Successfully");
+						if(flag==0) {
+							JOptionPane.showMessageDialog(null, "Update Successfully");
+							flag=1;
+						}
 					}
 				}
 		       }

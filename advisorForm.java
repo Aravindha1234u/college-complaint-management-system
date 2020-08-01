@@ -3,6 +3,8 @@ package project;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -23,14 +25,16 @@ public class advisorForm {
 	private JFrame frame;
 	private JTable table1;
 	sqlconnect sql;
-   Statement stmt;
-   ResultSet rs;
-	
+	Statement stmt;
+  	ResultSet rs;
+  	ArrayList<Integer> csno = new ArrayList<Integer>();
+  	int length=0;
 	public advisorForm(String email) {
 		frame = new JFrame();
 		Dimension screenSize1 = Toolkit.getDefaultToolkit().getScreenSize();
 	    frame.setSize(screenSize1.width, screenSize1.height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel label1 = new JLabel("Complaint Panel", SwingConstants.CENTER);
@@ -51,7 +55,7 @@ public class advisorForm {
 		frame.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
 		
 		table1 = new JTable();		
-		table1.setModel(new DefaultTableModel(new Object[0][9],new String[] {"Place", "Time", "Department","Victim_name","regno","reason","remark","Year","section"})
+		table1.setModel(new DefaultTableModel(new Object[0][9],new String[] {"sno","Victim_name","regno","Department","Year","section","Place", "Time","reason","remark"})
 				{
 				boolean[] columnEditables = new boolean[] {
 					false, false, false, false, false, false, true, false,false
@@ -71,8 +75,15 @@ public class advisorForm {
 		table1.getColumnModel().getColumn(7).setPreferredWidth(100);
 		table1.getColumnModel().getColumn(8).setPreferredWidth(100);
 		
-		JButton btnNewButton = new JButton("Submit");
+		JButton btnNewButton = new JButton("Edit");
 		btnNewButton.setBounds(620, 600, 80, 30);
+		btnNewButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new editform(csno.get(table1.getSelectedRow()));
+			}
+		});
 		frame.getContentPane().add(btnNewButton,BorderLayout.SOUTH);
 		
 		
@@ -87,6 +98,7 @@ public class advisorForm {
 	    	   while(rs.next())
 	    	   {
 	    		   int sno = rs.getInt("sno");
+	    		   csno.add(sno);
 	    		   String victim_name = rs.getString("VICTIM_NAME")  ;
 	    		   String rollnumber = rs.getString("REGNO")  ;
 	    		   String department =rs.getString("DEPARTMENT") ;
@@ -95,7 +107,7 @@ public class advisorForm {
 	    		   String place = rs.getString("PLACE") ;
 	    		   Date timing = rs.getDate("TIME") ;
 	    		   String reason = rs.getString("REASON") ;   
-	    		   String remarks = rs.getString("REMARK") ; 
+	    		   String remarks = rs.getString("REMARK") ;
 	    		   model.addRow(new Object[]{sno,victim_name,rollnumber,department,year,section,place,timing,reason,remarks});  	    		   
 	    		   table1.setModel(model); 	    		   
 	    	   } 	   

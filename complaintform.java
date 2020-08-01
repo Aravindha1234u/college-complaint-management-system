@@ -19,8 +19,8 @@ import java.util.Calendar;
 public class complaintform {
 
 	 JFrame frame;
-	 JLabel victim_label,roll_label,dept_label,time_label,reason_label,place_label,section_label,year_label;
-	 JTextField name_textfield,roll_textfield,timing_textfield;
+	 JLabel victim_label,roll_label,dept_label,time_label,reason_label,place_label,section_label,year_label,sregno_label;
+	 JTextField name_textfield,roll_textfield,timing_textfield,sregno_textfield;
 	 JTextArea reason_textarea;
 	 JButton  submit_button,clear_button;
 	 
@@ -29,23 +29,44 @@ public class complaintform {
 		frame = new JFrame();
 		frame.setTitle("Complaint Form");
 		frame.setBounds(100, 100, 801, 774);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
+		
+		roll_label = new JLabel("Complainant's Roll Number");
+	    roll_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+	    roll_label.setBounds(10,50,318,54);
+		frame.getContentPane().add(roll_label);
 		
 		victim_label = new JLabel("Suspect Name");
 		victim_label .setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		victim_label .setBounds(98, 117, 157, 31);
+		victim_label .setBounds(98,117,157,31);
 		frame.getContentPane().add(victim_label );
 		
-	    roll_label = new JLabel("Roll Number");
-	    roll_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-	    roll_label.setBounds(102, 191, 153, 31);
-		frame.getContentPane().add(roll_label);
+		sregno_label = new JLabel("Suspect Roll Number:");
+		sregno_label .setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		sregno_label .setBounds(102, 191, 153, 31);
+		frame.getContentPane().add(sregno_label );
 		
 		dept_label = new JLabel("Department");
 		dept_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		dept_label.setBounds(107, 255, 140, 31);
 		frame.getContentPane().add(dept_label);
+		
+		year_label = new JLabel("Year");
+		year_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		year_label.setBounds(141, 327, 76, 31);
+		frame.getContentPane().add(year_label );
+		
+		section_label = new JLabel("Section");
+		section_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		section_label.setBounds(406, 330, 82, 31);
+		frame.getContentPane().add(section_label );
+		
+		place_label = new JLabel("Place");
+		place_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		place_label.setBounds(141, 387, 76, 31);
+		frame.getContentPane().add(place_label );
 		
 		time_label = new JLabel("Timing");
 		time_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
@@ -57,37 +78,27 @@ public class complaintform {
 		reason_label.setBounds(141, 510, 76, 31);
 		frame.getContentPane().add(reason_label);
 		
-		place_label = new JLabel("Place");
-		place_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		place_label.setBounds(141, 387, 76, 31);
-		frame.getContentPane().add(place_label );
+		roll_textfield = new JTextField();
+		roll_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 19));
+		roll_textfield.setBounds(297, 62, 277, 34);
+		frame.getContentPane().add(roll_textfield);
 		
-	    section_label = new JLabel("Section");
-		section_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		section_label.setBounds(406, 330, 82, 31);
-		frame.getContentPane().add(section_label );
-		
-		year_label = new JLabel("Year");
-		year_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		year_label.setBounds(141, 327, 76, 31);
-		frame.getContentPane().add(year_label );
-			
 		name_textfield = new JTextField();
 		name_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 19));
 		name_textfield.setBounds(297, 117, 277, 34);
 		frame.getContentPane().add(name_textfield);
-				
-		roll_textfield = new JTextField();
-		roll_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 19));
-		roll_textfield.setBounds(297, 189, 277, 34);
-		frame.getContentPane().add(roll_textfield);
+		
+		sregno_textfield = new JTextField();
+		sregno_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 19));
+		sregno_textfield.setBounds(297, 189, 277, 34);
+		frame.getContentPane().add(sregno_textfield);
 				
 		SpinnerDateModel model=new SpinnerDateModel();
 		model.setCalendarField(Calendar.HOUR);
 		JSpinner startTime=new JSpinner();
 		startTime.setModel(model);
 		startTime.setBounds(297, 455, 277, 34);
-		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-mm-dd"));
+		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-MM-dd"));
 		JFormattedTextField tf= ((JSpinner.DefaultEditor)startTime.getEditor()).getTextField();
 	   	tf.setEditable(false);
 	   	frame.getContentPane().add(startTime);
@@ -115,7 +126,7 @@ public class complaintform {
 		
 		 JComboBox<String> section_combobox= new JComboBox<String>();
 		 section_combobox.setFont(new Font("Yu Gothic", Font.BOLD, 20));
-		 section_combobox.setBounds(500, 330, 66, 25);
+		 section_combobox.setBounds(500, 333, 66, 25);
 		 section_combobox.addItem("A");
 		 section_combobox.addItem("B");
 		 section_combobox.addItem("C");
@@ -156,8 +167,9 @@ public class complaintform {
 			                String str_year=year_combobox.getSelectedItem().toString();
 			                String str_section=section_combobox.getSelectedItem().toString();
 			                String str_place=place_combobox.getSelectedItem().toString();
+			                String str_sregno=sregno_textfield.getText();
 			                
-			                String query="insert into Db.complain(SNO,PLACE,TIME,DEPARTMENT,VICTIM_NAME,REGNO,REASON,REMARK,YEAR,SECTION) values(Db.complain_seq.NEXTVAL,?,?,?,?,?,?,?,?,?)";
+			                String query="insert into Db.complain(SNO,PLACE,TIME,DEPARTMENT,VICTIM_NAME,REGNO,REASON,REMARK,YEAR,SECTION,SUSPECT_REGNO) values(Db.complain_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?)";
 			                PreparedStatement p = sql.con.prepareStatement(query);
 			                p.setString(1,str_place);
 			                p.setDate(2, Date.valueOf(str_timing) );
@@ -168,6 +180,7 @@ public class complaintform {
 			                p.setString(7, "");
 			                p.setString(8, str_year);
 			                p.setString(9, str_section);
+			                p.setString(10, str_sregno);
 			                p.executeUpdate();
 			                JOptionPane.showMessageDialog(null, "Registration Success!");     
 			              }

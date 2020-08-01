@@ -1,5 +1,6 @@
 package project;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.ItemSelectable;
@@ -11,150 +12,232 @@ import java.awt.event.ItemListener;
 import javax.swing.*;  
 
 public class advisor_registerform {
+	JFrame frame;
+    JLabel fullname_label,firstname_label, lastname_label,email_label,password_label,dept_label,confirm_label,section_label,gender_label,phone_label,year_label;
+	JTextField firstname_textfield,lastname_textfield,email_textfield,phone_textfield;
+	JPasswordField password_passwordfield,confirm_passwordfield;
+    JRadioButton male_radiobutton,female_radiobutton;
+	ButtonGroup bg;
+	JButton submit_button,clear_button;
 	String str_gender="";
+	
 	advisor_registerform() {
-		JFrame f= new JFrame("Advisorform");
-	    f.setFont(new Font("Dialog", Font.BOLD, 12));
-	    f.setTitle("Advisor Registration Form");
-		f.setBounds(100, 100, 782, 778);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.getContentPane().setLayout(null);
+		frame = new JFrame();
+	    frame.setTitle("Registration Form");
+	    frame.setBounds(500, 100, 782, 778);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
+		frame.getContentPane().setLayout(null);
 		
-	    Container c=f.getContentPane();   
-	    c.setLayout(null);
-	    
-	    JLabel heading_lbl=new JLabel();
-	    heading_lbl.setBounds(120,40,400,40);
-	    heading_lbl.setText("ADVISOR REGISTRATION FORM"); 
-
-	    JLabel l1=new JLabel("CLASS");
-	    JLabel l2=new JLabel("First Name");  
-	    JLabel l2_1=new JLabel("Last Name");  
-	    JLabel l5=new JLabel("EMAIL");
-	    JLabel l6=new JLabel("PASSWORD");
-	    JLabel l7=new JLabel("RETYPE PSWD");
-	    JLabel l4=new JLabel("PHONE NUMBER");
-	    
-	    String dept[]={"CSE","IT","ECE","EEE","MECH","MCT","CIVIL"};        
-	    JComboBox <String> cb= new JComboBox<String>(dept);
-	    JLabel l3=new JLabel("DEPARTMENT");
-	    
-	    JRadioButton male_radio,female_radio;
-	    
-	    ButtonGroup bg;
-	    
-	    male_radio = new JRadioButton("Male");
-		male_radio .addItemListener(new ItemListener() {
+		fullname_label = new JLabel("Full Name");
+		fullname_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		fullname_label.setBounds(132, 86, 112, 29);
+		frame.getContentPane().add(fullname_label);
+		
+		firstname_label = new JLabel("First name");
+		firstname_label.setFont(new Font("Yu Gothic", Font.BOLD, 12));
+		firstname_label.setForeground(Color.GRAY);
+		firstname_label.setBounds(284, 120, 77, 16);
+		frame.getContentPane().add(firstname_label);
+		
+	    lastname_label = new JLabel("Last name");
+		lastname_label.setFont(new Font("Yu Gothic", Font.BOLD, 12));
+		lastname_label.setForeground(Color.GRAY);
+		lastname_label.setBounds(446, 120, 77, 16);
+		frame.getContentPane().add(lastname_label);
+		
+		email_label = new JLabel("Email Address");
+		email_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		email_label.setBounds(94, 174, 153, 29);
+		frame.getContentPane().add(email_label);
+		
+		gender_label= new JLabel("Gender");
+		gender_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		gender_label.setBounds(153, 254, 77, 29);
+		frame.getContentPane().add(gender_label);
+			
+		password_label = new JLabel("Password");
+		password_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		password_label.setBounds(132, 531, 133, 29);
+		frame.getContentPane().add(password_label);
+		
+		confirm_label = new JLabel("Confirm Password");
+		confirm_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		confirm_label.setBounds(78, 588, 187, 29);
+		frame.getContentPane().add(confirm_label);
+		
+		phone_label = new JLabel("Phone Number");
+		phone_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		phone_label.setBounds(114, 469, 153, 29);
+		frame.getContentPane().add(phone_label);
+		
+		dept_label = new JLabel("Department");
+		dept_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		dept_label.setBounds(132, 318, 127, 36);
+		frame.getContentPane().add(dept_label);
+			
+		section_label = new JLabel("Section");
+		section_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		section_label.setBounds(411, 393, 84, 29);
+		frame.getContentPane().add(section_label);
+		
+		year_label = new JLabel("Year");
+		year_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		year_label.setBounds(153, 389, 77, 36);
+		frame.getContentPane().add(year_label);
+		
+		male_radiobutton = new JRadioButton("Male");
+		male_radiobutton.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent m) {
 				ItemSelectable itemselected=m.getItemSelectable();
-		        if(itemselected==male_radio){
+		        if(itemselected==male_radiobutton ){
 		                str_gender="Male";	
 			}
 		}});
-		male_radio.setFont(new Font("Yu Gothic", Font.BOLD, 19));
-		male_radio.setBounds(400, 278, 100, 25);
+		male_radiobutton.setFont(new Font("Yu Gothic", Font.BOLD, 19));
+		male_radiobutton.setBounds(284, 256, 127, 25);
 		bg=new ButtonGroup();
-		bg.add(male_radio);
-		c.add(male_radio);
+		bg.add(male_radiobutton);
+		frame.getContentPane().add(male_radiobutton);
 		
-		female_radio = new JRadioButton("Female");
-		female_radio.addItemListener(new ItemListener() {
+		female_radiobutton = new JRadioButton("Female");
+		female_radiobutton.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent f) {
 				ItemSelectable itemselected=f.getItemSelectable();
-		        if(itemselected==female_radio ){
+		        if(itemselected==female_radiobutton ){
 		                str_gender="Female";	
 			}}		
 		});
-		female_radio.setFont(new Font("Yu Gothic", Font.BOLD, 19));
-		female_radio.setBounds(500, 278, 100, 25);
-		bg.add(female_radio);
-		c.add(female_radio);
-	    
-	   // JLabel l6=new JLabel("DEPARTMENT");
-	    
-	    JTextField tf1=new JTextField(); 
-	    JTextField tf2=new JTextField();
-	    JTextField tf2_1=new JTextField();
-	    JTextField tf4=new JTextField();
-	    JTextField tf5=new JTextField();
-	    
-	    JPasswordField value = new JPasswordField(); 
-	    JPasswordField value1 = new JPasswordField(); 
-	    
-	    JButton b=new JButton("Register");
-	    b.setBounds(150,500,100, 40);
-	    
-	    l1.setBounds(50,100, 100,30);  
-	    l2.setBounds(50,150, 50,30);
-	    l2_1.setBounds(310,150, 100,30);
-	    l3.setBounds(50,200, 100,30);
-	    l4.setBounds(50,250, 100,30);
-	    l5.setBounds(50,300, 100,30);
-	    l6.setBounds(50,350, 100,30);
-	    l7.setBounds(50,400, 100,30);
-	    
-	    tf1.setBounds(200,100, 200,30);  
-	    tf2.setBounds(200,150, 100,30);
-	    tf2_1.setBounds(380,150, 100,30);
-	    cb.setBounds(200,200, 200,30); 
-	    tf4.setBounds(200,250,200,30);
-	    tf5.setBounds(200,300, 200,30);  
-	    value.setBounds(200,350, 200,30);
-	    value1.setBounds(200,400, 200,30);
-	    
-	    //cb.setBounds(150,350,200,30);
-	    
-	    c.add(heading_lbl); 
-	    c.add(l1); c.add(l2);c.add(l3);c.add(l4);c.add(l5);c.add(l6);c.add(l7);c.add(b);c.add(l2_1);
-	    c.add(tf1);c.add(tf2);c.add(cb);c.add(tf4);c.add(tf5);c.add(value);c.add(value1);c.add(tf2_1);
-	    
-	    f.setSize(700,700);  
-	    f.setLayout(null);  
-	    f.setVisible(true);  
-	    
-	    //Register Process
-	    b.addActionListener(new ActionListener() {
-			
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Advisor advisor = new Advisor();
-					advisor.adclass=tf1.getText();
-					advisor.firstname=tf2.getText();
-					advisor.lastname=tf2_1.getText();
-					advisor.email=tf5.getText();
-					advisor.phonenumber=tf4.getText();
-					advisor.department=cb.getSelectedItem().toString();
-					advisor.gender=str_gender;
-					
-					//Regex Validation
-                    regexValidation regex = new regexValidation();
-                    regex.regexvalid((Advisor) advisor);
-					
-					if(value1.getText().toString().equals(value.getText().toString())==false) {
-                    	throw new regexValidation("Password Did not Match");
-                    }
-					
-                    password p1=new password();
-                    String encrypedString = p1.regexString(new String(value.getText()));
-                    if("Password Did not match the requirement" == encrypedString){
-                    	throw new regexValidation(encrypedString);
-                    }
-                    advisor.password=encrypedString;
-					
-					register reg = new register();
-					advisor.otp=reg.otp();
-					new sendmail(advisor.email,advisor.otp);
-					reg.appendRow(advisor);
-					JOptionPane.showMessageDialog(null, "Registration Success!");
-				} catch (regexValidation e1) {
-					JOptionPane.showMessageDialog(null, e1.exString);
-				}catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, e2.toString());
-				} 
+		female_radiobutton.setFont(new Font("Yu Gothic", Font.BOLD, 19));
+		female_radiobutton.setBounds(446, 256, 127, 25);
+		bg.add(female_radiobutton);
+		frame.getContentPane().add(female_radiobutton);
+		
+	    firstname_textfield = new JTextField();
+		firstname_textfield.setBounds(284, 84, 140, 29);
+		frame.getContentPane().add(firstname_textfield);
+		
+		lastname_textfield = new JTextField();
+		lastname_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
+		lastname_textfield.setBounds(436, 84, 150, 29);
+		frame.getContentPane().add(lastname_textfield);
+		
+		email_textfield = new JTextField();
+		email_textfield.setBounds(282, 176, 305, 29);
+		frame.getContentPane().add(email_textfield);
+	
+	    password_passwordfield = new JPasswordField();
+	    password_passwordfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
+		password_passwordfield.setBounds(292, 531, 290, 29);
+		frame.getContentPane().add(password_passwordfield);
+		
+		confirm_passwordfield = new JPasswordField();
+		confirm_passwordfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
+		confirm_passwordfield.setBounds(292, 588, 290, 29);
+		frame.getContentPane().add(confirm_passwordfield);
+		
+		phone_textfield = new JTextField();
+		phone_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
+		phone_textfield.setBounds(292, 469, 290, 29);
+		frame.getContentPane().add(phone_textfield);
+		
+
+		JComboBox<String> dept_combobox= new JComboBox<String>();
+		dept_combobox.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		dept_combobox.setBounds(303, 323, 121, 29);
+		dept_combobox.addItem("CSE");
+		dept_combobox.addItem("CSBS");
+        dept_combobox.addItem("IT");
+        dept_combobox.addItem("EEE");
+        dept_combobox.addItem("ECE");
+        dept_combobox.addItem("MECH");
+        dept_combobox.addItem("MCT");
+        dept_combobox.addItem("CIVIL");
+		frame.getContentPane().add(dept_combobox);
+		
+		JComboBox<String> section_combobox = new JComboBox<String>();
+		section_combobox.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		section_combobox.setBounds(507, 393, 70, 29);
+		section_combobox.addItem("A");
+        section_combobox.addItem("B");
+        section_combobox.addItem("C");
+		frame.getContentPane().add(section_combobox);
+		
+		JComboBox<String> year_combobox = new JComboBox<String>();
+		year_combobox.setBounds(296, 395, 84, 29);
+		section_combobox.addItem("1");
+        section_combobox.addItem("2");
+        section_combobox.addItem("3");
+        section_combobox.addItem("4");
+		frame.getContentPane().add(year_combobox);
+		
+        submit_button = new JButton("Submit");
+		submit_button.setFont(new Font("Yu Gothic", Font.BOLD, 22));
+		submit_button.setBounds(232, 662, 112, 36);
+		frame.getContentPane().add(submit_button);
+		
+		  submit_button.addActionListener(new ActionListener() {
 				
+				@SuppressWarnings("deprecation")
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						Advisor advisor = new Advisor();
+						advisor.adclass=section_combobox.getSelectedItem().toString();
+						advisor.firstname=firstname_textfield.getText();
+						advisor.lastname=lastname_textfield.getText();
+						advisor.email=email_textfield.getText();
+						advisor.phonenumber=phone_textfield.getText();
+						advisor.department=dept_combobox.getSelectedItem().toString();
+						advisor.gender=str_gender;
+						advisor.year=year_combobox.getSelectedItem().toString();
+						
+						//Regex Validation
+	                    regexValidation regex = new regexValidation();
+	                    regex.regexvalid((Advisor) advisor);
+						
+						if(password_passwordfield.getText().toString().equals(confirm_passwordfield.getText().toString())==false) {
+	                    	throw new regexValidation("Password Did not Match");
+	                    }
+						
+	                    password p1=new password();
+	                    String encrypedString = p1.regexString(new String(password_passwordfield.getText()));
+	                    if("Password Did not match the requirement" == encrypedString){
+	                    	throw new regexValidation(encrypedString);
+	                    }
+	                    advisor.password=encrypedString;
+						
+						register reg = new register();
+						advisor.otp=reg.otp();
+						reg.appendRow(advisor);
+						JOptionPane.showMessageDialog(null, "Registration Success!");
+					} catch (regexValidation e1) {
+						JOptionPane.showMessageDialog(null, e1.exString);
+					}catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.toString());
+					} 
+					
+				}
+			});
+		
+		clear_button = new JButton("Clear");
+		clear_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent cl) {
+				
+				lastname_textfield.setText("");
+			    password_passwordfield.setText(""); 
+				confirm_passwordfield.setText("");
+				phone_textfield.setText("");
+				bg.clearSelection(); 
+				JOptionPane.showMessageDialog(null, "Cleared Successfully");
 			}
 		});
+		clear_button.setFont(new Font("Yu Gothic", Font.BOLD, 22));
+		clear_button.setBounds(411, 662, 112, 36);
+		frame.getContentPane().add(clear_button);   
+		
+		
+		frame.setVisible(true);
 	}
 }
