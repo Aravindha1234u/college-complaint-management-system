@@ -45,7 +45,7 @@ public class complaintform {
 		
 		sregno_label = new JLabel("Suspect Roll Number:");
 		sregno_label .setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		sregno_label .setBounds(102, 191, 153, 31);
+		sregno_label .setBounds(69, 191, 209, 31);
 		frame.getContentPane().add(sregno_label );
 		
 		dept_label = new JLabel("Department");

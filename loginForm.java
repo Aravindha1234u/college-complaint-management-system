@@ -10,7 +10,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
@@ -92,7 +91,7 @@ public class loginForm {
                 }catch(regexValidation re) {
                 	JOptionPane.showMessageDialog(null, re.exString);
                 	if(bool==true && re.exString=="Access Granted") {
-                		new complaintform();
+                		new student_dashboard(Email);
                 		frame.setVisible(false);
                 	}else if(bool==false && re.exString=="Access Granted"){
                 		//Advisor Dashboard
@@ -123,8 +122,8 @@ public class loginForm {
         clear_button.setBounds(350, 320, 112, 36);
         frame.getContentPane().add(clear_button);
         
-        JLabel backgroundJLabel = new JLabel(new ImageIcon("C:\\Users\\Aravindha\\eclipse-workspace\\Bootcamp\\src\\project\\bg1.jpg"));
-        backgroundJLabel.setBounds(0,0,782,778);
+        JLabel backgroundJLabel = new JLabel(new ImageIcon(".\\source\\bg2.jpg"));
+        backgroundJLabel.setBounds(0,0, 584, 531);
         frame.add(backgroundJLabel);
         frame.setVisible(true);
 

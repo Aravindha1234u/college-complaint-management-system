@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,9 +28,9 @@ public class  viewform  {
    sqlconnect sql;
    Statement stmt;
    ResultSet rs;
-	 
+   ArrayList <Integer> cno= new ArrayList<Integer>();
    @SuppressWarnings("serial")
-viewform(){
+   viewform(){
 				
 		   frame=new JFrame("View Complaints");
 	       frame.setSize(1180,800);  
@@ -65,7 +66,7 @@ viewform(){
 				if(e.getSource() == edit_button) {
 		    		  int i = table.getSelectedRow();
 		              if(i >= 0){
-		            	  new editform(i+1);
+		            	  new editform(cno.get(i),table,"root");
 		    	     }
 		    	  }
 			}
@@ -85,7 +86,7 @@ viewform(){
 			                try {
 			                   sql=new sqlconnect();
 			       	    	   Statement stmt=sql.con.createStatement();
-			       	    	   stmt.executeUpdate("delete from Db.complain where sno="+(i+1));
+			       	    	   stmt.executeUpdate("delete from Db.complain where sno="+cno.get(i));
 			       	    	   model.removeRow(i);
 			       	    	   rs = stmt.executeQuery("select * from Db.complain");
 			       	    	   int j=1;
@@ -118,6 +119,7 @@ viewform(){
 	    	   while(rs.next())
 	    	   {
 	    		   int sno = rs.getInt("sno");
+	    		   cno.add(sno);
 	    		   String victim_name = rs.getString("VICTIM_NAME")  ;
 	    		   String rollnumber = rs.getString("REGNO")  ;
 	    		   String department =rs.getString("DEPARTMENT") ;

@@ -6,8 +6,10 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Calendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -15,9 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.table.DefaultTableModel;
 
 
 public class editform {
@@ -31,8 +35,9 @@ public class editform {
 	 String queryString; 
 	 PreparedStatement p ;
 	 ResultSet rs;
+	 Statement stmt;
 	 
-	editform(int sno) {
+	public editform(Integer sno, JTable table, String email) {
 		frame = new JFrame();
 		frame.setTitle("Complaint Form");
 		frame.setBounds(500, 100, 782, 778);
@@ -95,10 +100,10 @@ public class editform {
 		roll_textfield.setBounds(297, 189, 277, 34);
 		frame.getContentPane().add(roll_textfield);
 				
-		SpinnerDateModel model=new SpinnerDateModel();
-		model.setCalendarField(Calendar.HOUR);
+		SpinnerDateModel model1=new SpinnerDateModel();
+		model1.setCalendarField(Calendar.HOUR);
 		JSpinner startTime=new JSpinner();
-		startTime.setModel(model);
+		startTime.setModel(model1);
 		startTime.setBounds(297, 455, 277, 34);
 		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-MM-dd"));
 		JFormattedTextField tf= ((JSpinner.DefaultEditor)startTime.getEditor()).getTextField();
@@ -167,7 +172,7 @@ public class editform {
 			public void actionPerformed(ActionEvent e) {
 				String[] formvalue = new String[9];
 				try {
-				
+				//{4,5,3,8,9,1,2,6,7}
 				formvalue[0]=name_textfield.getText().toString();
 				formvalue[1]=roll_textfield.getText().toString();
 				formvalue[2]=dept_combobox.getSelectedItem().toString();
@@ -176,15 +181,15 @@ public class editform {
 				formvalue[5]=place_combobox.getSelectedItem().toString();
 				formvalue[6]=tf.getText();
 				formvalue[7]=reason_textarea.getText().toString();
-				formvalue[7]=remarks_textarea.getText().toString();
+				formvalue[8]=remarks_textarea.getText().toString();
 				int flag=0;
-				for(int i=0;i<8;i++) {
+				for(int i=0;i<=8;i++) {
 					//check for Changed value
-					if(rs.getString(seq[i]).equals(formvalue[i])==false) {
+					if(rs.getString(seq[i])==null || rs.getString(seq[i]).equals(formvalue[i])==false) {
 						
 						queryString = "UPDATE Db.complain SET "+rs.getMetaData().getColumnName(seq[i])+"=? WHERE SNO = ?";
 						
-						p =sql.con.prepareStatement(queryString);
+						p=sql.con.prepareStatement(queryString);
 						if(i!=6)
 							p.setString(1, formvalue[i]);
 						else 
@@ -194,17 +199,44 @@ public class editform {
 						p.setInt(2, sno);
 						p.executeQuery();
 						if(flag==0) {
-							JOptionPane.showMessageDialog(null, "Update Successfully");
-							flag=1;
+						JOptionPane.showMessageDialog(null, "Update Successfully");
+						flag=1;
 						}
 					}
 				}
+			   DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			   dtm.setRowCount(0);
+				
+			   sql=new sqlconnect();
+	    	   stmt=sql.con.createStatement();
+	    	   if(email!="root") {
+		    	   rs = stmt.executeQuery("select * from Db.advisor where EMAIL='"+email+"'");
+		    	   rs.next();
+		    	   rs=stmt.executeQuery("select * from Db.complain where section = '"+rs.getString("CLASS")+"' and department='"+rs.getString("DEPARTMENT")+"'");
+	    	   }else {
+		    	   rs=stmt.executeQuery("select * from Db.complain");
+	    	   }
+	    	   while(rs.next())
+	    	   {
+	    		   int sno = rs.getInt("sno");
+	    		   String victim_name = rs.getString("VICTIM_NAME")  ;
+	    		   String rollnumber = rs.getString("REGNO")  ;
+	    		   String department =rs.getString("DEPARTMENT") ;
+	    		   String year = rs.getString("YEAR") ;
+	    		   String section = rs.getString("SECTION") ; 
+	    		   String place = rs.getString("PLACE") ;
+	    		   Date timing = rs.getDate("TIME") ;
+	    		   String reason = rs.getString("REASON") ;   
+	    		   String remarks = rs.getString("REMARK") ;
+	    		   dtm.addRow(new Object[]{sno,victim_name,rollnumber,department,year,section,place,timing,reason,remarks});  	    		   
+	    		   //table.setModel((TableModel) model); 	    		   
+	    	   }
+	    	   frame.setVisible(false);
 		       }
 				catch (Exception e1) {
-					// TODO: handle exception
 					System.out.println(e1);
-				}
-			}
+				}				
+		}
 		});
 	    submit_button .setFont(new Font("Yu Gothic", Font.BOLD, 21));
 	    submit_button .setBounds(235, 654, 131, 34);
@@ -225,8 +257,12 @@ public class editform {
 		clear_button.setBounds(406, 654, 131, 34);
 		frame.getContentPane().add(clear_button);
 			
+		JLabel backgroundJLabel = new JLabel(new ImageIcon("source\\bg3.jpg")); //\\src\\project
+        backgroundJLabel.setBounds(0,0, 782, 778);
+        frame.add(backgroundJLabel);
+        
 		frame.setVisible(true);
-		
+
 		try {
 		   sql=new sqlconnect();
 	 	   queryString = "Select * from Db.complain where sno=?";
@@ -243,8 +279,10 @@ public class editform {
           place_combobox.setSelectedItem(rs.getString(seq[5]));
           tf.setValue(rs.getDate(seq[6]));
           reason_textarea.setText(rs.getString(seq[7]));
+          remarks_textarea.setText(rs.getString(seq[8]));
 		}catch (Exception e) {
 			System.out.println(e);
 		}
 	}
+
 }

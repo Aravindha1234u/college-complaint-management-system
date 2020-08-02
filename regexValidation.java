@@ -80,7 +80,7 @@ public class regexValidation  extends Throwable {
 			}
 			
 			//Email ID
-			regexString = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+			regexString = "^([a-zA-Z0-9_\\-\\.]+)@?skcet\\.ac\\.in$";
 			r = Pattern.compile(regexString);
 			m = r.matcher(object.email);
 			bool = new Boolean(m.find());
@@ -91,7 +91,7 @@ public class regexValidation  extends Throwable {
 			}
 			
 			//Phonenumber
-			regexString = "([9]{1})([234789]{1})([0-9]{8})";
+			regexString = "^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$";
 			r = Pattern.compile(regexString);
 			m = r.matcher(object.phonenumber);
 			bool = new Boolean(m.find());

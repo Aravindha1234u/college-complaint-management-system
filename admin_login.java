@@ -70,7 +70,7 @@ public class admin_login
 				} catch (regexValidation e1) {
 					JOptionPane.showMessageDialog(null, e1.exString);
 					if(e1.exString == "Access Granted") {
-						new viewform();
+						new admin_dashboard();
 						frame.setVisible(false);
 					}
 						
@@ -81,6 +81,10 @@ public class admin_login
 
 		signin_button.setBounds(221, 339, 117, 39);
 		frame.getContentPane().add(signin_button);
+		
+		JLabel backgroundJLabel = new JLabel(new ImageIcon("source\\bg2.jpg")); //\\src\\project
+        backgroundJLabel.setBounds(0,0, 584, 531);
+        frame.add(backgroundJLabel);
 		
 		frame.setVisible(true);
   

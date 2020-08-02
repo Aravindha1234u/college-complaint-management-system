@@ -1,7 +1,6 @@
 package project;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
@@ -115,6 +114,7 @@ public class advisor_registerform {
 		frame.getContentPane().add(female_radiobutton);
 		
 	    firstname_textfield = new JTextField();
+	    firstname_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		firstname_textfield.setBounds(284, 84, 140, 29);
 		frame.getContentPane().add(firstname_textfield);
 		
@@ -124,6 +124,7 @@ public class advisor_registerform {
 		frame.getContentPane().add(lastname_textfield);
 		
 		email_textfield = new JTextField();
+		email_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		email_textfield.setBounds(282, 176, 305, 29);
 		frame.getContentPane().add(email_textfield);
 	
@@ -147,7 +148,6 @@ public class advisor_registerform {
 		dept_combobox.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		dept_combobox.setBounds(303, 323, 121, 29);
 		dept_combobox.addItem("CSE");
-		dept_combobox.addItem("CSBS");
         dept_combobox.addItem("IT");
         dept_combobox.addItem("EEE");
         dept_combobox.addItem("ECE");
@@ -165,11 +165,12 @@ public class advisor_registerform {
 		frame.getContentPane().add(section_combobox);
 		
 		JComboBox<String> year_combobox = new JComboBox<String>();
+		year_combobox.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		year_combobox.setBounds(296, 395, 84, 29);
-		section_combobox.addItem("1");
-        section_combobox.addItem("2");
-        section_combobox.addItem("3");
-        section_combobox.addItem("4");
+		year_combobox.addItem("1");
+		year_combobox.addItem("2");
+		year_combobox.addItem("3");
+		year_combobox.addItem("4");
 		frame.getContentPane().add(year_combobox);
 		
         submit_button = new JButton("Submit");
@@ -210,6 +211,13 @@ public class advisor_registerform {
 						
 						register reg = new register();
 						advisor.otp=reg.otp();
+						new sendmail(advisor.email,advisor.otp);
+						String string = JOptionPane.showInputDialog(frame,"Enter the OTP");
+
+		                if (advisor.otp.equals(string)==false) {
+		                	throw new regexValidation("Wrong OTP");
+		                }
+		                advisor.otp="";
 						reg.appendRow(advisor);
 						JOptionPane.showMessageDialog(null, "Registration Success!");
 					} catch (regexValidation e1) {
@@ -237,6 +245,9 @@ public class advisor_registerform {
 		clear_button.setBounds(411, 662, 112, 36);
 		frame.getContentPane().add(clear_button);   
 		
+		JLabel backgroundJLabel = new JLabel(new ImageIcon("source\\image2.jpg")); //\\src\\project
+        backgroundJLabel.setBounds(0,0,782,778);
+        frame.add(backgroundJLabel);
 		
 		frame.setVisible(true);
 	}

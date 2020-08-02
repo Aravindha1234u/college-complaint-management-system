@@ -1,26 +1,53 @@
 package project;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Calendar;
 
-public class student_registerform {
-	 JFrame frame; 
-     JLabel fullname_label,firstname_label,lastname_label,email_label,confirm_label,password_lablel,gender_label,phone_label,
-      roll_label,year_label,dateofbirth_label,dept_label,section_label;
-	 JTextField firstname_textfield,lastname_textfield,email_textfield,dateofbirth_textfield,phone_textfield;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.ItemSelectable;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+public class studentForm {
+	JFrame frame; 
+    JLabel fullname_label,firstname_label,lastname_label,email_label,confirm_label,password_lablel,gender_label,phone_label,
+     roll_label,year_label,dateofbirth_label,dept_label,section_label,credit_label;
+	 JTextField firstname_textfield,lastname_textfield,email_textfield,dateofbirth_textfield,phone_textfield,credit_textfield;
 	 TextField roll_textfield;
 	 JPasswordField password_passwordfield,confirm_passwordfield; 
 	 JRadioButton male_radio,female_radio;
 	 ButtonGroup bg;
 	 JButton submit_button,clear_button;
 	 String str_gender="";
- 
-   student_registerform() {
-	    frame = new JFrame();
+	 sqlconnect sql;
+	 String queryString; 
+	 PreparedStatement p ;
+	 ResultSet rs;
+	 Statement stmt;
+	 
+	 public studentForm(String regno, JTable table) {
+		frame = new JFrame();
 	    frame.setFont(new Font("Dialog", Font.BOLD, 12));
-	    frame.setTitle("Student Registration Form");
+	    frame.setTitle("Student Details Form");
 	    frame.setBounds(500, 100, 782, 778);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
@@ -31,7 +58,7 @@ public class student_registerform {
 		fullname_label.setBounds(132, 86, 112, 29);
 		frame.getContentPane().add(fullname_label);
 		
-	    firstname_label = new JLabel("First Name");
+		firstname_label = new JLabel("First Name");
 	    firstname_label.setForeground(Color.BLACK);
 	    firstname_label.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 	    firstname_label.setBounds(292, 115, 77, 16);
@@ -47,16 +74,6 @@ public class student_registerform {
 		email_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		email_label.setBounds(106, 209, 153, 29);
 		frame.getContentPane().add(email_label);
-		
-		password_lablel = new JLabel("Password");
-		password_lablel.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		password_lablel.setBounds(132, 549, 133, 29);
-		frame.getContentPane().add(password_lablel );
-		
-		confirm_label = new JLabel("Confirm Password");
-		confirm_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		confirm_label.setBounds(78, 602, 187, 29);
-		frame.getContentPane().add(confirm_label );
 		
 		gender_label= new JLabel("Gender");
 		gender_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
@@ -78,11 +95,6 @@ public class student_registerform {
 		year_label.setBounds(153, 375, 77, 36);
 		frame.getContentPane().add(year_label );
 		
-		dateofbirth_label = new JLabel("Date of Birth");
-		dateofbirth_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
-		dateofbirth_label.setBounds(106, 438, 153, 29);
-		frame.getContentPane().add(dateofbirth_label);
-		
 		dept_label = new JLabel("Department");
 		dept_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		dept_label.setBounds(132, 318, 127, 36);
@@ -92,6 +104,11 @@ public class student_registerform {
 		section_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
 		section_label.setBounds(411, 379, 84, 29);
 		frame.getContentPane().add(section_label);
+		
+		credit_label = new JLabel("Credit Points");
+		credit_label.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		credit_label.setBounds(115,548, 150, 29);
+		frame.getContentPane().add(credit_label);
 			
 		male_radio = new JRadioButton("Male");
 		male_radio .addItemListener(new ItemListener() {
@@ -205,84 +222,70 @@ public class student_registerform {
 		frame.getContentPane().add(email_textfield);
 		email_textfield.setEditable(false);
 		
-		SpinnerDateModel model=new SpinnerDateModel();
-		model.setCalendarField(Calendar.HOUR);
-		JSpinner startTime=new JSpinner();
-		startTime.setModel(model);
-		startTime.setBounds(297, 440, 277, 34);
-		startTime.setEditor(new JSpinner.DateEditor(startTime,"yyyy-MM-dd"));
-		JFormattedTextField dateofbirth_textfield = ((JSpinner.DefaultEditor)startTime.getEditor()).getTextField();
-		dateofbirth_textfield.setEditable(false);
-	   	frame.getContentPane().add(startTime);
-		
-	
 		phone_textfield = new JTextField();
 		phone_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
 		phone_textfield.setBounds(292, 491, 290, 29);
 		frame.getContentPane().add(phone_textfield);
-			
-	    password_passwordfield = new JPasswordField();
-	    password_passwordfield .setFont(new Font("Yu Gothic", Font.BOLD, 20));
-	    password_passwordfield .setBounds(292, 549, 290, 29);
-		frame.getContentPane().add(password_passwordfield );
 		
-		confirm_passwordfield = new JPasswordField();
-		confirm_passwordfield .setFont(new Font("Yu Gothic", Font.BOLD, 20));
-		confirm_passwordfield .setBounds(292, 602, 290, 29);
-		frame.getContentPane().add(confirm_passwordfield );
+		credit_textfield = new JTextField();
+		credit_textfield.setFont(new Font("Yu Gothic", Font.BOLD, 20));
+		credit_textfield.setBounds(292, 550, 290, 29);
+		frame.getContentPane().add(credit_textfield);
 		
-	
-        submit_button = new JButton("Submit");
+		submit_button = new JButton("Edit");
         submit_button.addActionListener(new ActionListener() {
         	
-			@SuppressWarnings("deprecation")
+
 			public void actionPerformed(ActionEvent e) {
-						
+						int[] seq= {8,9,1,2,3,10,4,5,7,13};
 			            try{             
-			            	Student student = new Student();
-			                student.firstname =firstname_textfield.getText();
-			                student.lastname=lastname_textfield.getText();
-                            student.regno=roll_textfield.getText().toUpperCase();
-                            student.gender=str_gender;
-                            student.year=year_combobox.getSelectedItem().toString();
-                            student.section=section_combobox.getSelectedItem().toString();
-                            student.depart=dept_combobox.getSelectedItem().toString();
-                            student.email=email_textfield.getText();
-                            student.dob=dateofbirth_textfield.getText();
-                            student.phonenumber=phone_textfield.getText();
+                            String[] formvalue = new String[10];
 
-                            if(password_passwordfield.getText().toString().equals(confirm_passwordfield.getText().toString())==false) {
-                            	throw new regexValidation("Password Did not Match");
-                            }
-                            
-                            //Regex Validation
-                            regexValidation regex = new regexValidation();
-                            regex.regexvalid((Student) student);
-                            
-                            password p1=new password();
-                            String encrypedString = p1.regexString(new String(password_passwordfield.getText()));
-                            if("Password Did not match the requirement" == encrypedString){
-                            	throw new regexValidation(encrypedString);
-                            }
-			                student.password=encrypedString;
-			        		
-			                register reg = new register();
-			                student.otp=reg.otp();
-			                new sendmail(student.email,student.otp);
-			                String string = JOptionPane.showInputDialog(frame,"Enter the OTP");
-
-			                if (student.otp.equals(string)==false) {
-			                	throw new regexValidation("Wrong OTP");
-			                }
-			                student.otp="";
-	                		if (reg.appendRow((Student) student) == 1) 
-	                			throw new regexValidation("Registration Success!");
-	                		else
-	                			throw new regexValidation("Registration Failed");
-			              }
-			            catch (regexValidation ex) {
-			            	JOptionPane.showMessageDialog(null,ex.exString);
-						}
+            				formvalue[0]=firstname_textfield.getText();
+            				formvalue[1]=lastname_textfield.getText();
+            				formvalue[2]=roll_textfield.getText().toUpperCase();
+            				formvalue[3]=email_textfield.getText();
+            				formvalue[4]=phone_textfield.getText();
+            				formvalue[5]=str_gender;
+            				formvalue[6]=dept_combobox.getSelectedItem().toString();
+            				formvalue[7]=section_combobox.getSelectedItem().toString();
+            				formvalue[8]=year_combobox.getSelectedItem().toString();
+            				formvalue[9]=credit_textfield.getText();
+            				int flag=0;
+            				for(int i=0;i<=9;i++) {
+            					//check for Changed value
+            					if(rs.getString(seq[i])==null || rs.getString(seq[i]).equals(formvalue[i])==false) {
+            						
+            						queryString = "UPDATE Db.Student SET "+rs.getMetaData().getColumnName(seq[i])+"=? WHERE REGNO = ?";
+            						
+            						p=sql.con.prepareStatement(queryString);
+            						p.setString(1, formvalue[i]);            						
+            						p.setString(2, regno);
+            						p.executeQuery();
+            						if(flag==0) {
+            						JOptionPane.showMessageDialog(null, "Update Successfully");
+            						flag=1;
+            						}
+            					}
+            				}
+            				
+            			   DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+        				   dtm.setRowCount(0);
+        				   
+        				   sql=new sqlconnect();
+        			       stmt=sql.con.createStatement();
+        			       rs=stmt.executeQuery("select * from Db.student");
+        				   while(rs.next())
+		    				  {
+		    					ArrayList<Object> row = new ArrayList<Object>();
+		    					for(int col=0;col<seq.length;col++) {
+		    						row.add(rs.getObject(seq[col]));
+		    					}
+		    					dtm.addRow(row.toArray());
+		    				   // table.setModel(dtm);
+		    				  }
+        				   frame.setVisible(false);
+			            }
 			            catch(Exception ex){
 			                JOptionPane.showMessageDialog(null, ex);
 			            }
@@ -312,13 +315,31 @@ public class student_registerform {
 		clear_button.setFont(new Font("Yu Gothic", Font.BOLD, 22));
 		clear_button.setBounds(411, 662, 112, 36);
 		frame.getContentPane().add(clear_button);
-
-		JLabel backgroundJLabel = new JLabel(new ImageIcon("source\\image2.jpg")); //\\src\\project
-        backgroundJLabel.setBounds(0,0,782,778);
-        frame.add(backgroundJLabel);
-	        
-		frame.setVisible(true);
 		
-}
-   
+		try {
+			   sql=new sqlconnect();
+		 	   queryString = "Select * from Db.student where regno='"+regno+"'";
+		 	   stmt=sql.con.createStatement();
+	    	   rs=stmt.executeQuery(queryString);
+	    	   rs.next();
+	    	   firstname_textfield.setText(rs.getString("FIRST_NAME"));
+	    	   lastname_textfield.setText(rs.getString("LAST_NAME"));
+	    	   if(rs.getString("GENDER").equals("Male"))
+	    		   male_radio.setSelected(true);
+	    	   else
+	    		   female_radio.setSelected(true);
+	    	   roll_textfield.setText(regno);
+	    	   email_textfield.setText(rs.getString("EMAIL"));
+	    	   phone_textfield.setText(rs.getString("PHONENUMBER"));
+	    	   dept_combobox.setSelectedItem(rs.getString("DEPARTMENT"));
+	    	   section_combobox.setSelectedItem(rs.getString("SECTION"));
+	    	   year_combobox.setSelectedItem(rs.getString("year"));
+	    	   credit_textfield.setText(rs.getString("CREDIT_POINT"));
+			 
+		}catch (Exception e) {
+			System.out.println(e);
+		}		
+		
+		frame.setVisible(true);
+	}
 }

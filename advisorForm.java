@@ -2,6 +2,7 @@ package project;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,23 +29,19 @@ public class advisorForm {
   	ResultSet rs;
   	ArrayList<Integer> csno = new ArrayList<Integer>();
   	int length=0;
+	@SuppressWarnings("serial")
 	public advisorForm(String email) {
 		frame = new JFrame();
 		Dimension screenSize1 = Toolkit.getDefaultToolkit().getScreenSize();
-	    frame.setSize(screenSize1.width, screenSize1.height);
+		frame.setSize(screenSize1.width,screenSize1.height);
 	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel label1 = new JLabel("Complaint Panel", SwingConstants.CENTER);
-		label1.setBounds(620, 20, 100, 14);
-		frame.getContentPane().add(label1);
-		
-		
-		JLabel label = new JLabel("Welcome!!!");
-		label.setBounds(5, 5, 80, 20);
-		frame.getContentPane().add(label);
-		
+		label1.setBounds(620, 20, 318,20);
+		label1.setFont(new Font("Yu Gothic", Font.BOLD, 21));
+		frame.getContentPane().add(label1,BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(2, 47,screenSize1.width-25,screenSize1.height-500); 
@@ -65,23 +61,23 @@ public class advisorForm {
 				});
 		
 		table1.setRowHeight(50);
-		table1.getColumnModel().getColumn(0).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(1).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(4).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(5).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(6).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(7).setPreferredWidth(100);
-		table1.getColumnModel().getColumn(8).setPreferredWidth(100);
+		table1.getColumnModel().getColumn(0).setPreferredWidth(1);
+		table1.getColumnModel().getColumn(1).setPreferredWidth(10);
+		table1.getColumnModel().getColumn(2).setPreferredWidth(20);
+		table1.getColumnModel().getColumn(3).setPreferredWidth(30);
+		table1.getColumnModel().getColumn(4).setPreferredWidth(40);
+		table1.getColumnModel().getColumn(5).setPreferredWidth(50);
+		table1.getColumnModel().getColumn(6).setPreferredWidth(60);
+		table1.getColumnModel().getColumn(7).setPreferredWidth(70);
+		table1.getColumnModel().getColumn(8).setPreferredWidth(80);
 		
 		JButton btnNewButton = new JButton("Edit");
-		btnNewButton.setBounds(620, 600, 80, 30);
+		btnNewButton.setBounds(1480, 450,100, 40);
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new editform(csno.get(table1.getSelectedRow()));
+				new editform(csno.get(table1.getSelectedRow()),table1,email);
 			}
 		});
 		frame.getContentPane().add(btnNewButton,BorderLayout.SOUTH);
@@ -116,6 +112,10 @@ public class advisorForm {
 	        	 JOptionPane.showMessageDialog(null, e.toString());		         
 	         }
 		scrollPane.setViewportView(table1);
+
 		frame.setVisible(true);
+	}
+	public advisorForm() {
+		System.out.println(table1.getRowCount());
 	}
 }
